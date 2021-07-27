@@ -44,7 +44,7 @@ def power2n(pid):
 
 arr = "[[3, 2], [4, 3], [2, 3], [3, 4]]"
 pid = [29, 59, 14, 11, 3, 13, 15, 18, 12, 16, 6, 17, 7, 47, 61, 5, 21, 2, 41, 9, 10, 8, 19, 1, 4]
-pid.sort()
+pid.sort()#sort the passenger's id
 arr.split()
 
 check_prime(pid)
