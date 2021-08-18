@@ -1,0 +1,40 @@
+Test Case 1:
+Enter the number of block: >? 2
+Enter the number of rows in block :  1 >? 4
+Enter the number of columns in  block :  1 >? 2
+Enter the number of rows in block :  2 >? 4
+Enter the number of columns in  block :  2 >? 2
+Enter the passenger's id :  >? 61 54 97 32 11 4
+[0, 61][97, 0]
+[0, 0] [32, 0]
+[0, 11] [54, 0]
+[0, 4] [0, 0]
+
+Test Case 2:
+Enter the number of block: >? 3
+Enter the number of rows in block :  1 >? 4
+Enter the number of columns in  block :  1 >? 2
+Enter the number of rows in block :  2 >? 4
+Enter the number of columns in  block :  2 >? 3
+Enter the number of rows in block :  3 >? 4
+Enter the number of columns in  block :  3 >? 3
+Enter the passenger's id :  >? 97 84 65 71 24 32 58 64 81 6 7
+[0, 24] [64, 0, 0] [84, 0, 0]
+[0, 0] [71, 0, 97] [0, 0, 0]
+[0, 7] [0, 0, 81] [0, 0, 0]
+[0, 65] [32, 0, 58] [6, 0, 0]
+
+Test Case 3:
+Enter the number of block: >? 3
+Enter the number of rows in block :  1 >? 4
+Enter the number of columns in  block :  1 >? 2
+Enter the number of rows in block :  2 >? 4
+Enter the number of columns in  block :  2 >? 3
+Enter the number of rows in block :  3 >? 4
+Enter the number of columns in  block :  3 >? 2
+Enter the passenger's id :  >? 87 54 36 64 9 14 76
+[0, 0] [0, 0, 64] 
+[0, 76] [36, 0, 0]
+[0, 87] [0, 0, 14]
+[0, 0] [0, 0, 54]
+
