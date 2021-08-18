@@ -1,52 +1,244 @@
 import math
-
-def AWM(arr, pid):
-    # to arrange the seats for passengers
-    l1 = len(arr)
-    for i in range(0, l1):
-        for j in arr:
-            while l1:
-                if check_prime(pid):
-                    arr[[i][j]] = "A"
-                elif power2n(pid):
-                    arr[[i][j]] = "W"
-                else:
-                    arr[[i][j]] = "M"
+import random
 
 
-def check_prime(pid):
-    # to check whether the passenger's id is prime number or not
-    length = len(pid)
-    li = []
-    for i in range(2, length + 1):
-        for j in range(2, int(i ** 0.5) + 1):
-            if i % j == 0:
-                break
-        else:
-            li.append(i)
-    return(li)
-
-
-def Log2(x):
-    # to convert the id into log base 2
-    if x == 0:
+# checking if it is a prime number
+def Isprime(num):
+    if num == 1:
+        return False
+    for i in range(2, int(math.sqrt(num)) + 1):
+        if (num % i == 0):
+            return False
+    else:
         return True
-    return math.log10(x) / math.log10(2)
 
 
-def power2n(pid):
-    #to check the passenger's id is power of 2
-    l = len(pid)
-    for i in range(l):
-        if math.ceil(Log2(i)) == math.floor(Log2(i)):
-            return(i)
+# checking if it is a power of two
+
+def IspowerOf2(n):
+    res = math.log(n, 2)
+    whole = int(res)
+    if (res == whole):
+        return True
+    else:
+        return False
 
 
-arr = "[[3, 2], [4, 3], [2, 3], [3, 4]]"
-pid = [29, 59, 14, 11, 3, 13, 15, 18, 12, 16, 6, 17, 7, 47, 61, 5, 21, 2, 41, 9, 10, 8, 19, 1, 4]
-pid.sort()#sort the passenger's id
-arr.split()
+# driver program
 
-check_prime(pid)
-power2n(pid)
-AWM(arr, pid)
+n = int(input("Enter the number of block: "));
+dim = []  # stores number of rows and columns for N matrices in the form of (row,col) tuple
+temp = ()  # stores row and column of ith matrix as (row,col)
+Seat = []  # A 3-d array which stores the ultimate result
+Prime = []  # list storing prime numbers
+Power = []  # list storing Numbers that are  power of 2
+Other = []  # list storing the other category numbers
+W = []  # list storing the tuple(matrix num,row,col) corresponding to window seat
+A = []  # list storing the tuple(matrix num,row,col) corresponding to aisle seat
+C = []  # list storing the tuple(matrix num,row,col) corresponding to center seat
+
+# reading the dimensions of n matrices
+for i in range(n):
+    print("Enter the number of rows in block : ", i + 1, end=" ")
+    row = int(input())
+    print("Enter the number of columns in  block : ", i + 1, end=" ")
+    col = int(input())
+    temp = (row, col)
+    dim.append(temp)
+    temp = ()
+
+# initialising the Seat list
+
+for i in range(n):
+    mat = []
+    Row = dim[i][0]
+    Col = dim[i][1]
+    for j in range(Row):
+        rows = [0] * Col
+        mat.append(rows)
+    Seat.append(mat)
+
+# reading passenger id's
+
+print("Enter the passenger's id : ", end=" ")
+passenger = list(map(int, input().split(' ')))  # list storing passenger id's
+
+# separating paseenger id's into prime , power of 2,Other and appending in corresponding  lists
+
+for i in passenger:
+    if (Isprime(i)):
+        Prime.append(i)
+    elif (IspowerOf2(i)):
+        Power.append(i)
+    else:
+        Other.append(i)
+
+# calculating the tuples corresponding to window , aisle and center seats
+# The tuple is of form :(Matrix number , Row index , Column index)
+for i in range(n):
+    # if it is the first matrix then :
+    # First column -window
+    # middle columns-center
+    # last column - aisle
+    if (i == 0):
+        Row = dim[i][0]
+        Col = dim[i][1]
+        for j in range(Row):
+            for k in range(Col):
+                # checking if first column
+                if (k == 0):
+                    temp = (i, j, k)
+                    W.append(temp)
+                # checking if last column
+                elif (k == Col - 1):
+                    temp = (i, j, k)
+                    A.append(temp)
+                # else part
+                else:
+                    temp = (i, j, k)
+                    C.append(temp)
+
+    # if it is the Last matrix then :
+    # Last column -window
+    # middle columns-center
+    # First column - aisle
+
+    elif (i == n - 1):
+        Row = dim[i][0]
+        Col = dim[i][1]
+        for j in range(Row):
+            for k in range(Col):
+                # checking if first column
+                if (k == 0):
+                    temp = (i, j, k)
+                    A.append(temp)
+                # checking if last column
+                elif (k == Col - 1):
+                    temp = (i, j, k)
+                    W.append(temp)
+                else:
+                    temp = (i, j, k)
+                    C.append(temp)
+
+    # if it is not an extreme matrix then :
+    # First column -Aisle
+    # middle columns-center
+    # last column - aisle
+    else:
+        Row = dim[i][0]
+        Col = dim[i][1]
+        for j in range(Row):
+            for k in range(Col):
+                if (k == 0 or k == Col - 1):
+                    temp = (i, j, k)
+                    A.append(temp)
+                else:
+                    temp = (i, j, k)
+                    C.append(temp)
+
+# printing the wtuples corresponding to window , aisle , center seats
+
+# print("Window : ",W)
+# print("Aisle : ",A)
+# print("Center : ",C)
+
+# alloting seats
+
+# alloting seats for Prime passenger id's
+while (len(Prime) != 0):
+    # alloting in Aisle seats
+    if (len(A) != 0):
+        # choosing id's and seats randomly
+        passenger_id = random.choice(Prime)
+        temp = random.choice(A)
+        Seat[temp[0]][temp[1]][temp[2]] = passenger_id
+        Prime.remove(passenger_id)
+        A.remove(temp)
+
+    # alloting in Window seats
+
+    elif (len(W) != 0):
+        # choosing id's and seats randomly
+        passenger_id = random.choice(Prime)
+        temp = random.choice(W)
+        Seat[temp[0]][temp[1]][temp[2]] = passenger_id
+        Prime.remove(passenger_id)
+        W.remove(temp)
+
+        # alloting in Center seats
+    else:
+        # choosing id's and seats randomly
+        passenger_id = random.choice(Prime)
+        temp = random.choice(C)
+        Seat[temp[0]][temp[1]][temp[2]] = passenger_id
+        Prime.remove(passenger_id)
+        C.remove(temp)
+
+# alloting seats for Power 0f 2 passenger id's
+
+while (len(Power) != 0):
+    # alloting in Aisle seats
+
+    if (len(A) != 0):
+        passenger_id = random.choice(Power)
+        temp = random.choice(A)
+        Seat[temp[0]][temp[1]][temp[2]] = passenger_id
+        Power.remove(passenger_id)
+        A.remove(temp)
+
+    # alloting in Window seats
+
+    elif (len(W) != 0):
+        passenger_id = random.choice(Power)
+        temp = random.choice(W)
+        Seat[temp[0]][temp[1]][temp[2]] = passenger_id
+        Power.remove(passenger_id)
+        W.remove(temp)
+
+    # alloting in Center seats
+
+    else:
+        passenger_id = random.choice(Power)
+        temp = random.choice(C)
+        Seat[temp[0]][temp[1]][temp[2]] = passenger_id
+        Power.remove(passenger_id)
+        C.remove(temp)
+
+# alloting seats for other passenger id's
+
+while (len(Other) != 0):
+    # alloting in Aisle seats
+    if (len(A) != 0):
+
+        passenger_id = random.choice(Other)
+        temp = random.choice(A)
+        Seat[temp[0]][temp[1]][temp[2]] = passenger_id
+        Other.remove(passenger_id)
+        A.remove(temp)
+
+    # alloting in Window seats
+
+    elif (len(W) != 0):
+        passenger_id = random.choice(Other)
+        temp = random.choice(W)
+        Seat[temp[0]][temp[1]][temp[2]] = passenger_id
+        Other.remove(passenger_id)
+        W.remove(temp)
+
+        # alloting in Center seats
+
+    else:
+        passenger_id = random.choice(Other)
+        temp = random.choice(C)
+        Seat[temp[0]][temp[1]][temp[2]] = passenger_id
+        Other.remove(passenger_id)
+        C.remove(temp)
+
+# printing the seat arrangement
+
+for i in range(col):
+    Row = dim[i][0]
+    for j in range(Row):
+        print(Seat[i][j])
+    print('\n')
+
